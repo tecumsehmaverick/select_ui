@@ -5,10 +5,20 @@
 	
 	ol.symphony-select-ui {
 		border: 3px solid gray;
+		list-style: none;
+		padding: 0;
+	}
+	ol.symphony-select-ui > li {
+		border: 3px solid red;
 	}
 	
 </style>
 <script>
+	
+	/**
+	 * Select UI.
+	 */
+	$('ol.symphony-select-ui');
 	
 	/**
 	 * Matches select elements that have not been converted.
@@ -31,11 +41,26 @@
 			
 			// Grab selected items:
 			$select.find('option[selected]').each(function() {
-				var $item = $('<li />');
-				
-				$item.text($(this).text());
-				$item.attr('data-value', $(this).val());
-				$item.appendTo($list);
+				var $item = $('<li />')
+					.attr('data-value', $(this).val())
+					.appendTo($list);
+				var $label = $('<div />')
+					.addClass('label')
+					.text($(this).text())
+					.appendTo($item);
+				var $controls = $('<div />')
+					.addClass('controls')
+					.append(
+						$('<a />')
+							.addClass('move')
+							.text('Move')
+					)
+					.append(
+						$('<a />')
+							.addClass('remove')
+							.text('Remove')
+					)
+					.appendTo($item);
 			});
 			
 			// Add style hooks:
