@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<title>Select UI</title>
+<script src="jquery.js"></script>
+<style type="text/css">
+	
+	ol.symphony-select-ui {
+		border: 3px solid gray;
+	}
+	
+</style>
+<script>
+	
+	/**
+	 * Matches select elements that have not been converted.
+	 */
+	$('select[data-select-ui]')
+		
+		/**
+		 * Triggered to convert a select box into a Select UI.
+		 */
+		.live('initialize', function() {
+			var $select = $(this);
+			var $list = $('<ol />');
+			
+			// Grab the unique ID and extra info:
+			$list
+				.data({
+					'select-ui-id':		$select.attr('data-select-ui'),
+					'select-ui-info':	$select.attr('data-select-ui-info')
+				});
+			
+			// Grab selected items:
+			$select.find('option[selected]').each(function() {
+				var $item = $('<li />');
+				
+				$item.text($(this).text());
+				$item.attr('data-value', $(this).val());
+				$item.appendTo($list);
+			});
+			
+			// Add style hooks:
+			$list.addClass('symphony-select-ui');
+			
+			$select.replaceWith($list);
+		});
+	
+	/**
+	 * Initialize any select elements.
+	 */
+	$(document)
+		.ready(function() {
+			$('select[data-select-ui]')
+				.trigger('initialize');
+		});
+	
+</script>
+<select data-select-ui="uniqidhere" data-select-ui-info="[]" multiple>
+	<option>One</option>
+	<option selected>Two</option>
+	<option selected>Three</option>
+	<option>Four</option>
+</select>
